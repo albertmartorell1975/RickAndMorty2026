@@ -24,4 +24,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "RickAndMorty2026"
 include(":app")
+include(":domain")
+include(":data")
+include(":usecases")
  
