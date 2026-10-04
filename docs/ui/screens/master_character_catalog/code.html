@@ -1,0 +1,361 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_tab" name="shell-type"><title>Rick &amp; Morty Explorer</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..1000&amp;display=swap" rel="stylesheet"><style>@layer base { html, body { width: 100vw; margin: 0; padding: 0; min-height: 100vh; } body { overscroll-behavior-y: none; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; } * { -ms-overflow-style: none; scrollbar-width: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "background": "#0f131e", "status-dead": "#D63D2E", "tertiary-container": "#00d984", "on-tertiary-container": "#005933", "on-primary-fixed": "#112000", "on-background": "#dfe2f1", "secondary": "#54d7f0", "primary-fixed": "#baf46d", "inverse-on-surface": "#2c303c", "on-tertiary": "#00391f", "text-tertiary": "#6C727F", "surface-container-lowest": "#0a0e18", "status-alive": "#55CC44", "surface-container-low": "#171b26", "border-subtle": "rgba(255, 255, 255, 0.08)", "tertiary": "#00f998", "text-secondary": "#9E9E9E", "tertiary-fixed-dim": "#00e38a", "on-secondary-fixed": "#001f25", "accent-orange": "#FF9800", "primary": "#b2eb65", "status-unknown": "#9E9E9E", "surface-tint": "#9fd754", "on-primary-container": "#355500", "on-secondary": "#00363f", "on-tertiary-fixed": "#002110", "on-primary": "#203600", "surface-container": "#1b1f2a", "surface-input": "#151821", "secondary-fixed-dim": "#54d7f0", "surface-card": "#202428", "error": "#ffb4ab", "outline": "#8d937f", "error-container": "#93000a", "tertiary-fixed": "#56ffa7", "on-secondary-container": "#003942", "surface-elevated": "#262C3A", "surface-container-high": "#262a35", "surface-dim": "#0f131e", "surface-base": "#1A1E29", "text-primary": "#FFFFFF", "on-error-container": "#ffdad6", "on-tertiary-fixed-variant": "#00522f", "on-surface": "#dfe2f1", "inverse-surface": "#dfe2f1", "surface-bright": "#353945", "surface-container-highest": "#313440", "secondary-container": "#00aac2", "surface-variant": "#313440", "secondary-fixed": "#a4eeff", "primary-fixed-dim": "#9fd754", "inverse-primary": "#426900", "on-surface-variant": "#c3c9b3", "border-glow": "rgba(151, 206, 76, 0.35)", "on-error": "#690005", "on-primary-fixed-variant": "#314f00", "outline-variant": "#434938", "surface": "#0f131e", "primary-container": "#97ce4c", "on-secondary-fixed-variant": "#004e5a" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin": "1rem", "space-2xl": "3rem", "space-2xs": "0.125rem", "space-sm": "0.5rem", "gutter-sm": "0.75rem", "space-xl": "2rem", "space-xs": "0.25rem", "gutter": "1rem", "space-md": "1rem", "gutter-lg": "1.25rem", "space-lg": "1.5rem", "margin-sm": "0.75rem", "margin-lg": "1.5rem" }, "fontFamily": { "headline-sm": ["Inter"], "label-sm": ["Inter"], "body-md": ["Inter"], "headline-lg": ["Inter"], "label-md": ["Inter"], "body-lg": ["Inter"], "display-lg": ["Inter"], "body-sm": ["Inter"], "display-lg-mobile": ["Inter"], "label-lg": ["Inter"], "code-sm": ["Inter"], "headline-md": ["Inter"] }, "fontSize": { "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-lg": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "display-lg": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.03em", "fontWeight": "800" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "display-lg-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.025em", "fontWeight": "800" }], "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }], "code-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "700" }] } } } };</script><link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&amp;display=swap" rel="stylesheet" class=""><style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
+body, button, input, h1, h2, h3, h4, span, p, div, label, a, select, textarea {
+  font-family: 'Roboto Flex', sans-serif !important;
+}
+.material-symbols-outlined, [class*="material-symbols"] {
+  font-family: 'Material Symbols Outlined' !important;
+}
+</style><style class="">
+body, button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, span, div, a {
+  font-family: 'Roboto Flex', sans-serif !important;
+}
+.material-symbols-outlined, [class*="material-symbols"] {
+  font-family: 'Material Symbols Outlined' !important;
+}
+</style></head><body class="bg-surface text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container" style="font-family: &quot;Roboto Flex&quot;, sans-serif !important;"><header class="fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.35)] pt-safe"><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="Portal Gun Logo" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1Wj5CsxtlLoSwg6LKRUXhM-_tA9D_d1xRy-puGvA8_XmZQPIR1bdQVAirTfAzwR3R-9hO5AMsMlelKDX_nvXvgfT2vtIud3j8pwm-HbnHPu55PevAn9M0ajpQAo7wKQpAF9vKtv8QR49HBoW4kapDkKmzzEYkCH8SP6ECNjUvaSOKOSFXhNPCyDqE2rrVnVonBoAb_HFT4ukhjqKiGZ5hSxy7VQOJKTfBFgtB97wIUiXbU_Nt1eJLv7EZc"><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-text-primary tracking-tight truncate">Rick &amp; Morty</span><span class="px-space-xs py-space-2xs rounded-full bg-primary/15 text-primary font-label-sm text-label-sm uppercase tracking-wider flex-shrink-0">C-137</span></div><span class="font-label-sm text-label-sm text-text-secondary truncate">Character Catalog</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 bg-surface min-h-screen pb-6"><div class="flex flex-col w-full px-margin pb-space-xl">
+<!-- Dynamic Portal Atmosphere Glow -->
+<div class="relative w-full mb-space-md mt-space-sm">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 w-72 h-20 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<!-- Search Bar -->
+<div class="relative flex items-center w-full h-12 rounded-xl bg-surface-container-low shadow-md px-space-md group focus-within:shadow-[0_0_16px_rgba(178,235,101,0.25)] transition-all duration-200">
+<span class="material-symbols-outlined text-primary text-[22px] mr-space-sm select-none">search</span>
+<input class="w-full bg-transparent text-text-primary placeholder:text-text-secondary font-body-md text-body-md focus:outline-none" id="characterSearchInput" placeholder="Search character by name (e.g. Rick, Morty)..." type="text">
+<button aria-label="Clear search" class="hidden w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-text-secondary hover:text-text-primary active:scale-95 transition-all" id="clearSearchBtn" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Filter Chips Carousel -->
+<div class="flex items-center gap-space-xs overflow-x-auto pt-space-md pb-space-2xs no-scrollbar">
+<button class="filter-chip active flex-shrink-0 h-8 px-space-md rounded-full bg-primary/15 text-primary font-label-md text-label-md transition-all shadow-[0_0_10px_rgba(178,235,101,0.2)]" data-filter="all">
+        All (826)
+      </button>
+<button class="filter-chip flex-shrink-0 h-8 px-space-md rounded-full bg-surface-container-high text-text-secondary hover:text-on-surface font-label-md text-label-md transition-all flex items-center gap-1" data-filter="favorites">
+<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+        Favorites (3)
+      </button>
+<button class="filter-chip flex-shrink-0 h-8 px-space-md rounded-full bg-surface-container-high text-text-secondary hover:text-on-surface font-label-md text-label-md transition-all" data-filter="alive">
+        Alive (439)
+      </button>
+<button class="filter-chip flex-shrink-0 h-8 px-space-md rounded-full bg-surface-container-high text-text-secondary hover:text-on-surface font-label-md text-label-md transition-all" data-filter="dead">
+        Dead (287)
+      </button>
+<button class="filter-chip flex-shrink-0 h-8 px-space-md rounded-full bg-surface-container-high text-text-secondary hover:text-on-surface font-label-md text-label-md transition-all" data-filter="unknown">
+        Unknown (100)
+      </button>
+</div>
+</div>
+<!-- Character Grid: 2 Columns -->
+<div class="grid grid-cols-2 gap-space-sm w-full mb-space-xl" id="characterGrid">
+<!-- Card 1: Rick Sanchez -->
+<div class="character-card group flex flex-col w-full rounded-xl bg-surface-container-low shadow-md overflow-hidden transition-all duration-200 active:scale-[0.98]" data-favorite="true" data-name="Rick Sanchez" data-status="alive">
+<div class="relative w-full aspect-square bg-surface-container-highest overflow-hidden">
+<img alt="Rick Sanchez" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqGEw2tHoGqtq0Bf5I6vfKaI7Yd2qyt3IrGmUp2rzw5wzxLjqB9SFlDPg-JqtDNzB6zoC6HtG2gi89Q_-6egyICltJpZ4eo9Y9yGiyUmxbLC9538XQzFYUOeTKriR9L-ds3dYA7FkTUGgep7OTtsOXB7knpJMfHQGYw23UvRMKwO54jeKnchViu8QA6jAhLwcL1i4CkjX12t_mw9VTVPSZofnZnXE72If1HQ8aLZG8oCUajbFR-RJ0">
+<button aria-label="Toggle favorite Rick Sanchez" class="fav-toggle absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center text-primary shadow-sm hover:scale-110 active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded-full bg-surface-container-lowest/85 backdrop-blur-md flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-status-alive shadow-[0_0_8px_#55CC44]"></span>
+<span class="font-label-sm text-label-sm text-text-primary pr-0.5">Alive</span>
+</div>
+</div>
+<div class="p-space-sm flex flex-col flex-1 justify-between">
+<div class="min-w-0">
+<h2 class="font-headline-sm text-headline-sm text-text-primary truncate">Rick Sanchez</h2>
+<p class="font-body-sm text-body-sm text-text-secondary truncate mt-0.5">Human • Earth (C-137)</p>
+</div>
+<div class="mt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary/80 font-mono">#001</span>
+
+</div>
+</div>
+</div>
+<!-- Card 2: Morty Smith -->
+<div class="character-card group flex flex-col w-full rounded-xl bg-surface-container-low shadow-md overflow-hidden transition-all duration-200 active:scale-[0.98]" data-favorite="true" data-name="Morty Smith" data-status="alive">
+<div class="relative w-full aspect-square bg-surface-container-highest overflow-hidden">
+<img alt="Morty Smith" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjAe42taSQNvUjpkhD39e4xaZUrICrINXRPyntdXX6Nt_ym219LqRIPNFb2jQ4RGBz6Jkbs4v6GK75haTTR22m-Z_GpjpYlVTaF0bhUoigT_9F4tqhPPUcJT8Dd133OzaFmD0l6SyHhwJO7SxDSBsFVTmVP1zh-cRpP3GEeJRCKD9UW5AGO4Wq_PYblWWwg814sLs0M9vcCCJF79xGm9lodCy84VujFokeQ7XopuKW-MAcyxxGu7Jk">
+<button aria-label="Toggle favorite Morty Smith" class="fav-toggle absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center text-primary shadow-sm hover:scale-110 active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded-full bg-surface-container-lowest/85 backdrop-blur-md flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-status-alive shadow-[0_0_8px_#55CC44]"></span>
+<span class="font-label-sm text-label-sm text-text-primary pr-0.5">Alive</span>
+</div>
+</div>
+<div class="p-space-sm flex flex-col flex-1 justify-between">
+<div class="min-w-0">
+<h2 class="font-headline-sm text-headline-sm text-text-primary truncate">Morty Smith</h2>
+<p class="font-body-sm text-body-sm text-text-secondary truncate mt-0.5">Human • Earth (C-137)</p>
+</div>
+<div class="mt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary/80 font-mono">#002</span>
+
+</div>
+</div>
+</div>
+<!-- Card 3: Summer Smith -->
+<div class="character-card group flex flex-col w-full rounded-xl bg-surface-container-low shadow-md overflow-hidden transition-all duration-200 active:scale-[0.98]" data-favorite="false" data-name="Summer Smith" data-status="alive">
+<div class="relative w-full aspect-square bg-surface-container-highest overflow-hidden">
+<img alt="Summer Smith" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3rpT_xNaoal-S4g5jW5qqGj3x94fP3SsZF3OCzrZI2rXd4dYaS_QixcwQ29Jp8TCbFtoiaQRY6_KXJcoP3-FQUI6s9jbSsizbd4odK8L-zCV96j7pU02uqy8mFWs0eNIYY47mr5Ra80RKCWVvOp3TvaA0KwMGBws8_FWo_S_XcVyLkR1t4wx5EheNpmqHTd9-B3Lr3YUs7LRG7greuF_-WWMN-ZDmLEXxoNWpxRxhRHMl3LioXllz">
+<button aria-label="Toggle favorite Summer Smith" class="fav-toggle absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center text-text-secondary hover:text-primary shadow-sm hover:scale-110 active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded-full bg-surface-container-lowest/85 backdrop-blur-md flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-status-alive shadow-[0_0_8px_#55CC44]"></span>
+<span class="font-label-sm text-label-sm text-text-primary pr-0.5">Alive</span>
+</div>
+</div>
+<div class="p-space-sm flex flex-col flex-1 justify-between">
+<div class="min-w-0">
+<h2 class="font-headline-sm text-headline-sm text-text-primary truncate">Summer Smith</h2>
+<p class="font-body-sm text-body-sm text-text-secondary truncate mt-0.5">Human • Earth (Replacement)</p>
+</div>
+<div class="mt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary/80 font-mono">#003</span>
+
+</div>
+</div>
+</div>
+<!-- Card 4: Beth Smith -->
+<div class="character-card group flex flex-col w-full rounded-xl bg-surface-container-low shadow-md overflow-hidden transition-all duration-200 active:scale-[0.98]" data-favorite="false" data-name="Beth Smith" data-status="alive">
+<div class="relative w-full aspect-square bg-surface-container-highest overflow-hidden">
+<img alt="Beth Smith" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfRtbIyhnGft8lNScYp36g4RwwK9r_o8hgfitZbcoLxPbCBAP24mqwl4B6lpMqa_mqfnv1br--1wLTBIOUJfiXc5FYnVGYDpcCV4JF5XzjHr8c6Vg0okclK4AT5xQdMz_NsjSZzlTD4XZyqXaE8CuwBceRy4bv_TXljFdJJAXfy4Pr98iTi7Q5g-cEu5-e81M7OdhHTK4tzw57ERsAJwgKBlt6xiev4-ZsOY7ATkJmppGI3mUvhn8I">
+<button aria-label="Toggle favorite Beth Smith" class="fav-toggle absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center text-text-secondary hover:text-primary shadow-sm hover:scale-110 active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded-full bg-surface-container-lowest/85 backdrop-blur-md flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-status-alive shadow-[0_0_8px_#55CC44]"></span>
+<span class="font-label-sm text-label-sm text-text-primary pr-0.5">Alive</span>
+</div>
+</div>
+<div class="p-space-sm flex flex-col flex-1 justify-between">
+<div class="min-w-0">
+<h2 class="font-headline-sm text-headline-sm text-text-primary truncate">Beth Smith</h2>
+<p class="font-body-sm text-body-sm text-text-secondary truncate mt-0.5">Human • Earth (Replacement)</p>
+</div>
+<div class="mt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary/80 font-mono">#004</span>
+
+</div>
+</div>
+</div>
+<!-- Card 5: Jerry Smith -->
+<div class="character-card group flex flex-col w-full rounded-xl bg-surface-container-low shadow-md overflow-hidden transition-all duration-200 active:scale-[0.98]" data-favorite="false" data-name="Jerry Smith" data-status="alive">
+<div class="relative w-full aspect-square bg-surface-container-highest overflow-hidden">
+<img alt="Jerry Smith" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB2o9gIpBx30L3bGIhFjsCx3qSoP6qixfZqkKnoqXaCmqvyILdNBxepOjVhew97f-ALjBxtZw99H4EcKW4pqlevd4R70vSHxDR7cQwyFOa-Yi8R3xqzqho609kx9kjFqKcUKg6e9kRHu3OD8YnwW37ZbhXkKSg-wfe4CRs2c4BA1LrfWvGiWavCACestWoZCwifZgwZugXS6uvzwhKsXiCg8bDG1CfHbk-tYzycbWLvHzdAbksO9HA">
+<button aria-label="Toggle favorite Jerry Smith" class="fav-toggle absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center text-text-secondary hover:text-primary shadow-sm hover:scale-110 active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded-full bg-surface-container-lowest/85 backdrop-blur-md flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-status-alive shadow-[0_0_8px_#55CC44]"></span>
+<span class="font-label-sm text-label-sm text-text-primary pr-0.5">Alive</span>
+</div>
+</div>
+<div class="p-space-sm flex flex-col flex-1 justify-between">
+<div class="min-w-0">
+<h2 class="font-headline-sm text-headline-sm text-text-primary truncate">Jerry Smith</h2>
+<p class="font-body-sm text-body-sm text-text-secondary truncate mt-0.5">Human • Earth (Replacement)</p>
+</div>
+<div class="mt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary/80 font-mono">#005</span>
+
+</div>
+</div>
+</div>
+<!-- Card 6: Abradolf Lincler -->
+<div class="character-card group flex flex-col w-full rounded-xl bg-surface-container-low shadow-md overflow-hidden transition-all duration-200 active:scale-[0.98]" data-favorite="true" data-name="Abradolf Lincler" data-status="unknown">
+<div class="relative w-full aspect-square bg-surface-container-highest overflow-hidden">
+<img alt="Abradolf Lincler" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC09TU3PBtLgpxQxthD0rmAHOKpn4nJJFNwWo0yr2d_vFuVmoWQyjI5n17j1bF_U3cTJIXCvSwxBJU1ei3z4y1qa9ADafiTlugqwnKYCBsYsbkXt9gtGV6oZibFTMosf6-7GTA0t03QBdfCM1ixGYJRnMoQwJbw69KLUnvTyCR5H_NZ5qeqr80voHf_fh9pBJnNFRaYZzIrndvnbqwm3SPZgpFNyw8FUXddbFXsR9G0enGrg0rVWj3A">
+<button aria-label="Toggle favorite Abradolf Lincler" class="fav-toggle absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center text-primary shadow-sm hover:scale-110 active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded-full bg-surface-container-lowest/85 backdrop-blur-md flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-status-unknown"></span>
+<span class="font-label-sm text-label-sm text-text-primary pr-0.5">Unknown</span>
+</div>
+</div>
+<div class="p-space-sm flex flex-col flex-1 justify-between">
+<div class="min-w-0">
+<h2 class="font-headline-sm text-headline-sm text-text-primary truncate">Abradolf Lincler</h2>
+<p class="font-body-sm text-body-sm text-text-secondary truncate mt-0.5">Genetic Experiment • Earth</p>
+</div>
+<div class="mt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary/80 font-mono">#007</span>
+
+</div>
+</div>
+</div>
+<!-- Card 7: Adjudicator Rick -->
+<div class="character-card group flex flex-col w-full rounded-xl bg-surface-container-low shadow-md overflow-hidden transition-all duration-200 active:scale-[0.98]" data-favorite="false" data-name="Adjudicator Rick" data-status="dead">
+<div class="relative w-full aspect-square bg-surface-container-highest overflow-hidden">
+<img alt="Adjudicator Rick" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG7YCHdmmBGktYPzcdyYSx_k0IOf7T0YulImzK-12saBsx39d35_dQ6n_FBkF7ItBh-ROz3wLzCZVgAQpB6jOVoqy-EULa6UWOj7V7wLVw1i6cW_JTIK8IIwO8oTDnbCdJLktO3ByHZ2ep5j0q1Ua3qZeqffTXbc0l4zp9ebYqJNa3sYhD3Kaa1MMUAXKXS_75RW-lSTlpBAauwvvygHdDKRViO3m2EkBOq_YtiQiXNnw7SP6XoPxr">
+<button aria-label="Toggle favorite Adjudicator Rick" class="fav-toggle absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center text-text-secondary hover:text-primary shadow-sm hover:scale-110 active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded-full bg-surface-container-lowest/85 backdrop-blur-md flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-status-dead shadow-[0_0_8px_#D63D2E]"></span>
+<span class="font-label-sm text-label-sm text-text-primary pr-0.5">Dead</span>
+</div>
+</div>
+<div class="p-space-sm flex flex-col flex-1 justify-between">
+<div class="min-w-0">
+<h2 class="font-headline-sm text-headline-sm text-text-primary truncate">Adjudicator Rick</h2>
+<p class="font-body-sm text-body-sm text-text-secondary truncate mt-0.5">Human • Citadel of Ricks</p>
+</div>
+<div class="mt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary/80 font-mono">#008</span>
+
+</div>
+</div>
+</div>
+<!-- Card 8: Agency Director -->
+<div class="character-card group flex flex-col w-full rounded-xl bg-surface-container-low shadow-md overflow-hidden transition-all duration-200 active:scale-[0.98]" data-favorite="false" data-name="Agency Director" data-status="dead">
+<div class="relative w-full aspect-square bg-surface-container-highest overflow-hidden">
+<img alt="Agency Director" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLSb5nEm5mWfFktx47erYDLK0TAeELUXh-e3CRlwEiMr3-k9YkwEnBB-YZWD4Gg8x6sLiiwrLuOZUoqj4P0gvmFqfEOMnIQ9taRd6Yv6_gPAeCAO3hau8qx50dGk_UIN3hMeV4bXAuAtY82yrJ0BCworIbYpDAc330V3Pl0TW7aTCQfIJxGrWbME6s5BhM2j3NET-T90HPeGal16EVG-nO_jwUnP9fRNokcUi_70Pz0HO-DLJc3l4c">
+<button aria-label="Toggle favorite Agency Director" class="fav-toggle absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center text-text-secondary hover:text-primary shadow-sm hover:scale-110 active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded-full bg-surface-container-lowest/85 backdrop-blur-md flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-status-dead shadow-[0_0_8px_#D63D2E]"></span>
+<span class="font-label-sm text-label-sm text-text-primary pr-0.5">Dead</span>
+</div>
+</div>
+<div class="p-space-sm flex flex-col flex-1 justify-between">
+<div class="min-w-0">
+<h2 class="font-headline-sm text-headline-sm text-text-primary truncate">Agency Director</h2>
+<p class="font-body-sm text-body-sm text-text-secondary truncate mt-0.5">Human • Earth (Replacement)</p>
+</div>
+<div class="mt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary/80 font-mono">#009</span>
+
+</div>
+</div>
+</div>
+</div><div class="flex items-center justify-center w-full mt-6 mb-4"><div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container/90 backdrop-blur-md shadow-md border-subtle"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span><span class="font-label-sm text-label-sm text-on-surface font-mono tracking-tight">Showing 8 of 826 • Page 1 of 42</span></div></div>
+<!-- Empty State (Hidden by default) -->
+<div class="hidden flex-col items-center justify-center py-space-2xl text-center px-margin" id="noResultsState">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-space-sm shadow-inner">
+<span class="material-symbols-outlined text-[32px] text-text-secondary">search_off</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary">No Multiversal Beings Found</h3>
+<p class="font-body-sm text-body-sm text-text-secondary mt-1 max-w-[240px]">Try recalibrating your portal coordinates or searching a different reality name.</p>
+</div>
+<!-- Bottom Floating Cache & Offline Status Pill -->
+
+</div>
+<script>
+  (function() {
+    const searchInput = document.getElementById('characterSearchInput');
+    const clearBtn = document.getElementById('clearSearchBtn');
+    const filterChips = document.querySelectorAll('.filter-chip');
+    const cards = document.querySelectorAll('.character-card');
+    const noResults = document.getElementById('noResultsState');
+    let currentFilter = 'all';
+
+    function applyFilters() {
+      const query = (searchInput.value || '').trim().toLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const name = (card.getAttribute('data-name') || '').toLowerCase();
+        const status = card.getAttribute('data-status');
+        const isFav = card.getAttribute('data-favorite') === 'true';
+
+        const matchesQuery = query === '' || name.includes(query);
+        let matchesFilter = true;
+
+        if (currentFilter === 'favorites') {
+          matchesFilter = isFav;
+        } else if (currentFilter !== 'all') {
+          matchesFilter = status === currentFilter;
+        }
+
+        if (matchesQuery && matchesFilter) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      if (visibleCount === 0) {
+        noResults.classList.remove('hidden');
+        noResults.classList.add('flex');
+      } else {
+        noResults.classList.add('hidden');
+        noResults.classList.remove('flex');
+      }
+
+      if (query.length > 0) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchInput.focus();
+      applyFilters();
+    });
+
+    filterChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        filterChips.forEach(c => {
+          c.classList.remove('bg-primary/15', 'text-primary', 'shadow-[0_0_10px_rgba(178,235,101,0.2)]');
+          c.classList.add('bg-surface-container-high', 'text-text-secondary');
+        });
+
+        chip.classList.remove('bg-surface-container-high', 'text-text-secondary');
+        chip.classList.add('bg-primary/15', 'text-primary', 'shadow-[0_0_10px_rgba(178,235,101,0.2)]');
+
+        currentFilter = chip.getAttribute('data-filter');
+        applyFilters();
+      });
+    });
+
+    // Favorite micro-interaction
+    document.querySelectorAll('.fav-toggle').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const card = btn.closest('.character-card');
+        const isFav = card.getAttribute('data-favorite') === 'true';
+        const icon = btn.querySelector('.material-symbols-outlined');
+
+        if (isFav) {
+          card.setAttribute('data-favorite', 'false');
+          btn.classList.remove('text-primary');
+          btn.classList.add('text-text-secondary');
+          icon.style.fontVariationSettings = "'FILL' 0";
+        } else {
+          card.setAttribute('data-favorite', 'true');
+          btn.classList.remove('text-text-secondary');
+          btn.classList.add('text-primary');
+          icon.style.fontVariationSettings = "'FILL' 1";
+          
+          // Micro pop
+          btn.animate([
+            { transform: 'scale(0.8)' },
+            { transform: 'scale(1.25)' },
+            { transform: 'scale(1)' }
+          ], { duration: 250, easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)' });
+        }
+
+        if (currentFilter === 'favorites') {
+          applyFilters();
+        }
+      });
+    });
+  })();
+</script></main>
+
+
+
+
+
+
+
+</body></html>
