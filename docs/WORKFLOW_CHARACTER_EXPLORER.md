@@ -40,26 +40,26 @@ The implementation strictly follows **Clean Architecture** across the multi-modu
 - [x] **Domain Models**: Create `Character`, `Episode`, `Location`, `LocationRef` domain models under `com.martorell.albert.rickandmorty2026.domain.model`.
 - [x] **Repository Interface**: Define `CharacterRepository` contract returning Kotlin `Flow` and `Result` types under `com.martorell.albert.rickandmorty2026.domain.repository`.
 - [x] **MANDATORY**: Execute `compiler` skill verification suite.
-- [ ] **MANDATORY**: Request Commit & Push (Manual or via `git-governance` skill) before advancing.
+- [x] **MANDATORY**: Request Commit & Push (Manual or via `git-governance` skill) before advancing.
 
 ### Phase 2: Data Layer (`:data`)
-- [ ] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
-- [ ] **Remote Data Source**: Setup Retrofit service API interface and DTO models under `com.martorell.albert.rickandmorty2026.data.remote`.
-- [ ] **Local Data Source**: Create Room database `RickAndMortyDatabase`, `CharacterEntity`, and `CharacterDao` under `com.martorell.albert.rickandmorty2026.data.local`.
-- [ ] **Repository Implementation**: Implement `CharacterRepositoryImpl` coordinating remote fetch + Room cache in `com.martorell.albert.rickandmorty2026.data.repository`.
-- [ ] **Hilt Data Module**: Configure Hilt DI module for API and Room binding under `com.martorell.albert.rickandmorty2026.data.di`.
-- [ ] **MANDATORY**: Execute `compiler` skill verification suite.
+- [x] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
+- [x] **Remote Data Source**: Setup Retrofit service API interface and DTO models under `com.martorell.albert.rickandmorty2026.data.remote`.
+- [x] **Local Data Source**: Create Room database `RickAndMortyDatabase`, `CharacterEntity`, and `CharacterDao` under `com.martorell.albert.rickandmorty2026.data.local`.
+- [x] **Repository Implementation**: Implement `CharacterRepositoryImpl` coordinating remote fetch + Room cache in `com.martorell.albert.rickandmorty2026.data.repository`.
+- [x] **Hilt Data Module**: Configure Hilt DI module for API and Room binding under `com.martorell.albert.rickandmorty2026.data.di`.
+- [x] **MANDATORY**: Execute `compiler` skill verification suite.
 - [ ] **MANDATORY**: Request Commit & Push (Manual or via `git-governance` skill) before advancing.
 
 ### Phase 3: UseCases Layer (`:usecases`)
-- [ ] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
-- [ ] **UseCases Implementation**:
+- [x] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
+- [x] **UseCases Implementation**:
   - `GetCharactersUseCase`
   - `SearchCharactersUseCase`
   - `GetCharacterDetailUseCase`
   - `ToggleFavoriteUseCase`
-- [ ] **Hilt UseCases Module**: Configure Hilt DI module under `com.martorell.albert.rickandmorty2026.usecases.di`.
-- [ ] **MANDATORY**: Execute `compiler` skill verification suite.
+- [x] **Hilt UseCases Module**: Configure Hilt DI module under `com.martorell.albert.rickandmorty2026.usecases.di`.
+- [x] **MANDATORY**: Execute `compiler` skill verification suite.
 - [ ] **MANDATORY**: Request Commit & Push (Manual or via `git-governance` skill) before advancing.
 
 ### Phase 4: Presentation & UI Layer (`:app`)
