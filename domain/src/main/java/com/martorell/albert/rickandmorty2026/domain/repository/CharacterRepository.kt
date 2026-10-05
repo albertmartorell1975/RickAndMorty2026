@@ -14,9 +14,9 @@ interface CharacterRepository {
 
     fun getCharacterDetail(id: Int): Flow<Result<Character>>
 
-    fun getEpisodes(ids: List<Int>): Flow<Result<List<Episode>>>
+    suspend fun getEpisodes(ids: List<Int>): Result<List<Episode>>
 
-    fun toggleFavorite(characterId: Int): Flow<Result<Unit>>
+    suspend fun toggleFavorite(characterId: Int): Result<Unit>
 
     fun getFavoriteCharacters(): Flow<List<Character>>
 }
