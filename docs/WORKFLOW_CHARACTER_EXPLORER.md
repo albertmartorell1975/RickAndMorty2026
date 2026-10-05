@@ -36,10 +36,10 @@ The implementation strictly follows **Clean Architecture** across the multi-modu
 ## Actionable Implementation Checklist
 
 ### Phase 1: Domain Layer (`:domain`)
-- [ ] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
-- [ ] **Domain Models**: Create `Character`, `Episode`, `Location`, `LocationRef` domain models under `com.martorell.albert.rickandmorty2026.domain.model`.
-- [ ] **Repository Interface**: Define `CharacterRepository` contract returning Kotlin `Flow` and `Result` types under `com.martorell.albert.rickandmorty2026.domain.repository`.
-- [ ] **MANDATORY**: Execute `compiler` skill verification suite.
+- [x] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
+- [x] **Domain Models**: Create `Character`, `Episode`, `Location`, `LocationRef` domain models under `com.martorell.albert.rickandmorty2026.domain.model`.
+- [x] **Repository Interface**: Define `CharacterRepository` contract returning Kotlin `Flow` and `Result` types under `com.martorell.albert.rickandmorty2026.domain.repository`.
+- [x] **MANDATORY**: Execute `compiler` skill verification suite.
 - [ ] **MANDATORY**: Request Commit & Push (Manual or via `git-governance` skill) before advancing.
 
 ### Phase 2: Data Layer (`:data`)
