@@ -49,7 +49,7 @@ The implementation strictly follows **Clean Architecture** across the multi-modu
 - [x] **Repository Implementation**: Implement `CharacterRepositoryImpl` coordinating remote fetch + Room cache in `com.martorell.albert.rickandmorty2026.data.repository`.
 - [x] **Hilt Data Module**: Configure Hilt DI module for API and Room binding under `com.martorell.albert.rickandmorty2026.data.di`.
 - [x] **MANDATORY**: Execute `compiler` skill verification suite.
-- [ ] **MANDATORY**: Request Commit & Push (Manual or via `git-governance` skill) before advancing.
+- [x] **MANDATORY**: Request Commit & Push (Manual or via `git-governance` skill) before advancing.
 
 ### Phase 3: UseCases Layer (`:usecases`)
 - [x] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints

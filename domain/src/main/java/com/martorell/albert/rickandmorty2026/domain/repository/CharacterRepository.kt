@@ -2,6 +2,7 @@ package com.martorell.albert.rickandmorty2026.domain.repository
 
 import com.martorell.albert.rickandmorty2026.domain.model.Character
 import com.martorell.albert.rickandmorty2026.domain.model.Episode
+import com.martorell.albert.rickandmorty2026.domain.model.Result
 import kotlinx.coroutines.flow.Flow
 
 interface CharacterRepository {

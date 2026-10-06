@@ -9,9 +9,11 @@ import com.martorell.albert.rickandmorty2026.data.remote.dto.EpisodeDto
 import com.martorell.albert.rickandmorty2026.data.remote.dto.LocationRefDto
 import com.martorell.albert.rickandmorty2026.data.remote.dto.PageInfoDto
 import com.martorell.albert.rickandmorty2026.data.repository.CharacterRepositoryImpl
+import com.martorell.albert.rickandmorty2026.domain.model.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -52,10 +54,10 @@ class CharacterRepositoryImplTest {
 
         val result = repository.getCharacters(page = 1).first()
 
-        assertTrue(result.isSuccess)
-        val list = result.getOrNull()
-        assertEquals(1, list?.size)
-        assertEquals("Rick Sanchez", list?.first()?.name)
+        assertTrue(result is Result.Success)
+        val list = (result as Result.Success).data
+        assertEquals(1, list.size)
+        assertEquals("Rick Sanchez", list.first().name)
     }
 
     @Test
@@ -71,10 +73,10 @@ class CharacterRepositoryImplTest {
 
         val result = repository.getEpisodes(listOf(1))
 
-        assertTrue(result.isSuccess)
-        val list = result.getOrNull()
-        assertEquals(1, list?.size)
-        assertEquals("Pilot", list?.first()?.name)
+        assertTrue(result is Result.Success)
+        val list = (result as Result.Success).data
+        assertEquals(1, list.size)
+        assertEquals("Pilot", list.first().name)
     }
 
     @Test
@@ -98,9 +100,50 @@ class CharacterRepositoryImplTest {
 
         val result = repository.toggleFavorite(1)
 
-        assertTrue(result.isSuccess)
+        assertTrue(result is Result.Success)
         val updated = fakeLocalDataSource.getCharacterById(1)
         assertEquals(true, updated?.isFavorite)
+    }
+
+    @Test
+    fun getCharacterDetail_emitsLocalAndThenRemoteResult() = runTest {
+        val entity = CharacterEntity(
+            id = 1,
+            name = "Rick Sanchez",
+            status = "Alive",
+            species = "Human",
+            type = "",
+            gender = "Male",
+            image = "img",
+            originName = "Earth",
+            originUrl = "url",
+            locationName = "Earth",
+            locationUrl = "url",
+            episodeUrls = "ep1",
+            isFavorite = false,
+        )
+        fakeLocalDataSource.insertCharacter(entity)
+
+        val dto = CharacterDto(
+            id = 1,
+            name = "Rick Sanchez",
+            status = "Alive",
+            species = "Human",
+            type = "",
+            gender = "Male",
+            origin = LocationRefDto("Earth", "url"),
+            location = LocationRefDto("Earth", "url"),
+            image = "img",
+            episode = listOf("ep1"),
+        )
+        fakeApi.charactersResponse = CharacterResponseDto(null, listOf(dto))
+
+        val emissions = repository.getCharacterDetail(1).toList()
+
+        assertEquals(2, emissions.size)
+        assertTrue(emissions.first() is Result.Success)
+        assertTrue(emissions.last() is Result.Success)
+        assertEquals("Rick Sanchez", (emissions.first() as Result.Success).data.name)
     }
 }
 
@@ -116,7 +159,7 @@ private class FakeRickAndMortyDataSource : RickAndMortyDataSource {
     ): CharacterResponseDto = charactersResponse
 
     override suspend fun getCharacterDetail(id: Int): CharacterDto {
-        return charactersResponse.results?.first { it.id == id }
+        return charactersResponse.results?.firstOrNull { it.id == id }
             ?: throw NoSuchElementException("Character not found")
     }
 
@@ -127,6 +170,9 @@ private class FakeCharacterLocalDataSource : LocalDataSource {
     private val db = mutableMapOf<Int, CharacterEntity>()
 
     override suspend fun getCharacterById(id: Int): CharacterEntity? = db[id]
+
+    override fun getCharacterByIdFlow(id: Int): Flow<CharacterEntity?> =
+        flowOf(db[id])
 
     override fun getFavoriteCharacters(): Flow<List<CharacterEntity>> =
         flowOf(db.values.filter { it.isFavorite })

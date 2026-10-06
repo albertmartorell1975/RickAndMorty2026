@@ -12,6 +12,9 @@ class LocalDataSourceImpl @Inject constructor(db: RickAndMortyDatabase) : LocalD
     override suspend fun getCharacterById(id: Int): CharacterEntity? =
         characterDao.getCharacterById(id)
 
+    override fun getCharacterByIdFlow(id: Int): Flow<CharacterEntity?> =
+        characterDao.getCharacterByIdFlow(id)
+
     override fun getFavoriteCharacters(): Flow<List<CharacterEntity>> =
         characterDao.getFavoriteCharacters()
 

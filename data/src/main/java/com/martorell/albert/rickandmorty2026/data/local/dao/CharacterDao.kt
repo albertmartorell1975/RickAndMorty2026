@@ -13,6 +13,9 @@ interface CharacterDao {
     @Query("SELECT * FROM characters WHERE id = :id")
     suspend fun getCharacterById(id: Int): CharacterEntity?
 
+    @Query("SELECT * FROM characters WHERE id = :id")
+    fun getCharacterByIdFlow(id: Int): Flow<CharacterEntity?>
+
     @Query("SELECT * FROM characters WHERE isFavorite = 1 ORDER BY name ASC")
     fun getFavoriteCharacters(): Flow<List<CharacterEntity>>
 

@@ -1,5 +1,6 @@
 package com.martorell.albert.rickandmorty2026.usecases
 
+import com.martorell.albert.rickandmorty2026.domain.model.Result
 import com.martorell.albert.rickandmorty2026.domain.repository.CharacterRepository
 import javax.inject.Inject
 
