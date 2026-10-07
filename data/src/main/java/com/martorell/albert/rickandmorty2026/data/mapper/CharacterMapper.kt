@@ -5,6 +5,7 @@ import com.martorell.albert.rickandmorty2026.data.remote.dto.CharacterDto
 import com.martorell.albert.rickandmorty2026.data.remote.dto.EpisodeDto
 import com.martorell.albert.rickandmorty2026.data.remote.dto.LocationRefDto
 import com.martorell.albert.rickandmorty2026.domain.model.Character
+import com.martorell.albert.rickandmorty2026.domain.model.CharacterStatus
 import com.martorell.albert.rickandmorty2026.domain.model.Episode
 import com.martorell.albert.rickandmorty2026.domain.model.LocationRef
 
@@ -21,7 +22,7 @@ fun CharacterDto.toDomain(isFavorite: Boolean = false): Character {
     return Character(
         id = id ?: 0,
         name = name ?: "",
-        status = status ?: "",
+        status = CharacterStatus.fromString(status),
         species = species ?: "",
         type = type ?: "",
         gender = gender ?: "",
@@ -55,7 +56,7 @@ fun CharacterEntity.toDomain(): Character {
     return Character(
         id = id,
         name = name,
-        status = status,
+        status = CharacterStatus.fromString(status),
         species = species,
         type = type,
         gender = gender,
@@ -71,7 +72,7 @@ fun Character.toEntity(): CharacterEntity {
     return CharacterEntity(
         id = id,
         name = name,
-        status = status,
+        status = status.name, // Save Enum as String to DB
         species = species,
         type = type,
         gender = gender,
