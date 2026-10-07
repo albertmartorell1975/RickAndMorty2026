@@ -12,6 +12,7 @@ androidx-activity-compose = "1.8.0"
 androidx-core-ktx = "1.10.1"
 androidx-lifecycle = "2.6.1"
 androidx-room = "2.8.5"
+androidx-navigation = "2.8.5"
 
 # Jetpack Compose
 androidx-compose-bom = "2026.02.01"
@@ -22,6 +23,10 @@ retrofit = "2.11.0"
 
 # Dependency Injection
 hilt = "2.55"
+hilt-navigation-compose-version = "1.2.0"
+
+# Image Loading
+coil = "2.7.0"
 
 # Testing
 androidx-espresso = "3.5.1"
@@ -33,6 +38,8 @@ junit = "4.13.2"
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation" }
 
 # Jetpack Compose
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
@@ -58,7 +65,12 @@ retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.r
 # Dependency Injection
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose-version" }
 javax-inject = { group = "javax.inject", name = "javax.inject", version = "1" }
+
+# UI / Image Loading
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
 # Testing
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso" }
