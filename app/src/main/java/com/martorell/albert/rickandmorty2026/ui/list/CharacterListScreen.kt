@@ -29,6 +29,7 @@ import com.martorell.albert.rickandmorty2026.domain.model.Character
 import com.martorell.albert.rickandmorty2026.domain.model.CharacterStatus
 import com.martorell.albert.rickandmorty2026.domain.model.LocationRef
 import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterCard
+import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterPageIndicator
 import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterSearchBar
 import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterStatusFilterChips
 import com.martorell.albert.rickandmorty2026.ui.theme.RickAndMorty2026Theme
@@ -127,7 +128,7 @@ fun CharacterListContent(
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
                             modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(bottom = 16.dp),
+                            contentPadding = PaddingValues(bottom = 64.dp),
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
@@ -141,6 +142,18 @@ fun CharacterListContent(
                                     onFavoriteToggle = onFavoriteToggle
                                 )
                             }
+                        }
+
+                        if (state.totalCount > 0) {
+                            CharacterPageIndicator(
+                                countShown = content.characters.size,
+                                totalCount = state.totalCount,
+                                currentPage = state.currentPage,
+                                totalPages = state.totalPages,
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .padding(bottom = 12.dp)
+                            )
                         }
                     }
                 }
@@ -195,7 +208,10 @@ private fun CharacterListContentPreview() {
             state = CharacterListViewModel.UiState(
                 content = CharacterListViewModel.CharacterListContent.Success(sampleCharacters),
                 searchQuery = "",
-                selectedStatus = null
+                selectedStatus = null,
+                totalCount = 826,
+                totalPages = 42,
+                currentPage = 1
             ),
             onCharacterClicked = {},
             onFavoriteToggle = {},

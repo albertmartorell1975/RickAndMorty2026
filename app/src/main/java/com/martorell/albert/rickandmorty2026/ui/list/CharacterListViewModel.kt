@@ -55,11 +55,14 @@ class CharacterListViewModel @Inject constructor(
             }
 
             is Result.Success -> {
+                val characterCatalog = result.data
                 val trimmedQuery = query.trim()
                 val filtered = if (trimmedQuery.isEmpty()) {
-                    result.data
+                    characterCatalog.characters
                 } else {
-                    result.data.filter { it.name.contains(trimmedQuery, ignoreCase = true) }
+                    characterCatalog.characters.filter {
+                        it.name.contains(trimmedQuery, ignoreCase = true)
+                    }
                 }
 
                 // Clear refreshing flag once data succeeds
@@ -70,6 +73,9 @@ class CharacterListViewModel @Inject constructor(
                     searchQuery = query,
                     selectedStatus = status,
                     isRefreshing = false,
+                    totalCount = characterCatalog.totalCount,
+                    totalPages = characterCatalog.totalPages,
+                    currentPage = characterCatalog.currentPage,
                 )
             }
 
@@ -96,6 +102,9 @@ class CharacterListViewModel @Inject constructor(
         val searchQuery: String = "",
         val selectedStatus: CharacterStatus? = null, // null = "All"
         val isRefreshing: Boolean = false,
+        val totalCount: Int = 0,
+        val totalPages: Int = 0,
+        val currentPage: Int = 1,
     )
 
     sealed interface CharacterListContent {
