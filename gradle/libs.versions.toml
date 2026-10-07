@@ -6,6 +6,7 @@ ksp = "2.3.12"
 # Kotlin
 kotlin = "2.2.10"
 kotlinx-coroutines = "1.10.1"
+kotlinx-serialization-json = "1.8.0"
 
 # AndroidX
 androidx-activity-compose = "1.8.0"
@@ -22,7 +23,7 @@ okhttp = "4.12.0"
 retrofit = "2.11.0"
 
 # Dependency Injection
-hilt = "2.55"
+hilt = "2.60.1"
 hilt-navigation-compose-version = "1.2.0"
 
 # Image Loading
@@ -51,6 +52,7 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 
 # Kotlin
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 
 # Local Database (Room)
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
@@ -85,5 +87,6 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

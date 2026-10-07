@@ -37,8 +37,9 @@ import com.martorell.albert.rickandmorty2026.ui.theme.RmThemePreview
 
 @Composable
 fun CharacterListScreen(
-    onCharacterClicked: (Character) -> Unit,
+    onCharacterClicked: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     viewModel: CharacterListViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -49,13 +50,13 @@ fun CharacterListScreen(
 
     CharacterListContent(
         state = state,
-        onCharacterClicked = onCharacterClicked,
+        onCharacterClicked = { onCharacterClicked(it.id) },
         onFavoriteToggle = viewModel::onFavoriteToggle,
         onSearchQueryChanged = viewModel::onSearchQueryChanged,
         onStatusSelected = viewModel::onStatusSelected,
         onRetry = viewModel::onStart,
         onRefresh = viewModel::onRefresh,
-        modifier = modifier
+        modifier = modifier.padding(contentPadding)
     )
 }
 

@@ -79,7 +79,7 @@ The implementation strictly follows **Clean Architecture** across the multi-modu
     - **Preview Structure**: Always wrap the stateless `*Content` composable inside `RickAndMorty2026Theme { ... }` in the Preview functions. Never preview the stateful `*Screen` (which relies on ViewModels).
     - **Images in Previews**: For Coil's `AsyncImage`, use the `placeholder` parameter with `if (LocalInspectionMode.current) painterResource(R.drawable.some_placeholder) else null` or `debugPlaceholder()` to ensure images render in the IDE preview without network.
 - [ ] **App Navigation Architecture**: 
-  - Establish a single global `Scaffold` (e.g., `RickAndMortyApp` component) to hold shared elements like `TopAppBar`, `BottomNavigationBar`, and `SnackbarHost`.
+  - Establish a single global `Scaffold` (e.g., `Navigation` component) to hold shared elements like `TopAppBar`, and `SnackbarHost`.
   - Create a state holder `AppState` to hoist the `NavHostController` and conditionally manage visibility of shared elements depending on the current route.
   - Implement a `NavHost` inside the Scaffold using **type-safe routes** (Navigation 3).
   - Modularize the graph using `NavGraphBuilder` extension functions (e.g., `fun NavGraphBuilder.characterListGraph(...)`).
