@@ -55,9 +55,11 @@ class CharacterRepositoryImplTest {
         val result = repository.getCharacters(page = 1).first()
 
         assertTrue(result is Result.Success)
-        val list = (result as Result.Success).data
-        assertEquals(1, list.size)
-        assertEquals("Rick Sanchez", list.first().name)
+        val catalog = (result as Result.Success).data
+        assertEquals(1, catalog.characters.size)
+        assertEquals("Rick Sanchez", catalog.characters.first().name)
+        assertEquals(1, catalog.totalCount)
+        assertEquals(1, catalog.totalPages)
     }
 
     @Test

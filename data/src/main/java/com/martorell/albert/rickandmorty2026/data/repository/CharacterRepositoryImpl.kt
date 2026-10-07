@@ -6,6 +6,7 @@ import com.martorell.albert.rickandmorty2026.data.mapper.toEntity
 import com.martorell.albert.rickandmorty2026.data.remote.RickAndMortyDataSource
 import com.martorell.albert.rickandmorty2026.data.util.safeCall
 import com.martorell.albert.rickandmorty2026.domain.model.Character
+import com.martorell.albert.rickandmorty2026.domain.model.CharacterCatalog
 import com.martorell.albert.rickandmorty2026.domain.model.Episode
 import com.martorell.albert.rickandmorty2026.domain.model.Result
 import com.martorell.albert.rickandmorty2026.domain.repository.CharacterRepository
@@ -24,7 +25,7 @@ class CharacterRepositoryImpl @Inject constructor(
         name: String?,
         status: String?,
         species: String?,
-    ): Flow<Result<List<Character>>> = flow {
+    ): Flow<Result<CharacterCatalog>> = flow {
         val result = safeCall {
             val response = serverDataSource.getCharacters(
                 page = page,
@@ -33,6 +34,8 @@ class CharacterRepositoryImpl @Inject constructor(
                 species = species
             )
             val characters = response.results ?: emptyList()
+            val totalCount = response.info?.count ?: characters.size
+            val totalPages = response.info?.pages ?: 1
 
             val entities = characters.map { dto ->
                 val existingLocal = dto.id?.let { localDataSource.getCharacterById(it) }
@@ -44,7 +47,12 @@ class CharacterRepositoryImpl @Inject constructor(
                 localDataSource.insertCharacters(entities)
             }
 
-            entities.map { it.toDomain() }
+            CharacterCatalog(
+                characters = entities.map { it.toDomain() },
+                totalCount = totalCount,
+                totalPages = totalPages,
+                currentPage = page,
+            )
         }
         emit(result)
     }
