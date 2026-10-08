@@ -8,6 +8,7 @@ import com.martorell.albert.rickandmorty2026.domain.model.CharacterStatus
 import com.martorell.albert.rickandmorty2026.domain.model.Result
 import com.martorell.albert.rickandmorty2026.ui.util.UiText
 import com.martorell.albert.rickandmorty2026.usecases.GetCharactersUseCase
+import com.martorell.albert.rickandmorty2026.usecases.GetFavoriteCharactersUseCase
 import com.martorell.albert.rickandmorty2026.usecases.ToggleFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -22,12 +23,37 @@ import javax.inject.Inject
 class CharacterListViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
+    private val getFavoriteCharactersUseCase: GetFavoriteCharactersUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state.asStateFlow()
 
     private var fetchJob: Job? = null
+    private var favoritesJob: Job? = null
+
+    fun onStart() {
+        startObservingFavorites()
+        if (_state.value.characters.isEmpty() && _state.value.errorMessage == null) {
+            _state.update { it.copy(isLoadingInitial = true) }
+            loadCharacters(page = 1)
+        }
+    }
+
+    private fun startObservingFavorites() {
+        if (favoritesJob != null) return
+        favoritesJob = viewModelScope.launch {
+            getFavoriteCharactersUseCase().collect { favorites ->
+                val favoriteIds = favorites.map { it.id }.toSet()
+                _state.update { currentState ->
+                    val updatedCharacters = currentState.characters.map { character ->
+                        character.copy(isFavorite = character.id in favoriteIds)
+                    }
+                    currentState.copy(characters = updatedCharacters)
+                }
+            }
+        }
+    }
 
     data class UiState(
         val characters: List<Character> = emptyList(),
@@ -42,13 +68,6 @@ class CharacterListViewModel @Inject constructor(
         val totalPages: Int = 0,
         val currentPage: Int = 1,
     )
-
-    fun onStart() {
-        if (_state.value.characters.isEmpty() && _state.value.errorMessage == null) {
-            _state.update { it.copy(isLoadingInitial = true) }
-            loadCharacters(page = 1)
-        }
-    }
 
     fun onRetry() {
         _state.update {
