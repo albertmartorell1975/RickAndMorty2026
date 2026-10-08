@@ -31,33 +31,33 @@ No Persistence changes required.
 ## Actionable Implementation Checklist
 
 ### Phase 1: Navigation Setup (Basic Skeleton)
-- [ ] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
-- [ ] **Basic Screen Composable**: Create `CharacterDetailScreen.kt` in `ui/detail/` with a simple text showing the passed `characterId`.
-- [ ] **Navigation Integration**: Update `Navigation.kt` to uncomment `Destination.CharacterDetail` and route to `CharacterDetailScreen`. Test that clicking a character in the list navigates successfully.
-- [ ] **MANDATORY**: Execute `compiler` skill verification suite.
-- [ ] **MANDATORY**: Request Commit & Push (Manual or via `git-governance` skill) before advancing.
+- [x] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
+- [x] **Basic Screen Composable**: Create `CharacterDetailScreen.kt` in `ui/detail/` with a simple text showing the passed `characterId`.
+- [x] **Navigation Integration**: Update `Navigation.kt` to uncomment `Destination.CharacterDetail` and route to `CharacterDetailScreen`. Test that clicking a character in the list navigates successfully.
+- [x] **MANDATORY**: Execute `compiler` skill verification suite.
+- [x] **MANDATORY**: Request Commit & Push (Manual or via `git-governance` skill) before advancing.
 
 ### Phase 2: ViewModel & UI State
-- [ ] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
-- [ ] **UI State**: Define `CharacterDetailUiState` inside or alongside the ViewModel.
-- [ ] **ViewModel**: Create `CharacterDetailViewModel` in `app/src/main/java/com/martorell/albert/rickandmorty2026/ui/detail/`.
+- [x] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
+- [x] **UI State**: Define `CharacterDetailUiState` inside or alongside the ViewModel.
+- [x] **ViewModel**: Create `CharacterDetailViewModel` in `app/src/main/java/com/martorell/albert/rickandmorty2026/ui/detail/`.
       - Inject `GetCharacterDetailUseCase` and `ToggleFavoriteUseCase`.
       - Expose a single `StateFlow` containing the UI state.
       - Add a method to toggle favorite status and update the state.
-- [ ] **MANDATORY**: Execute `compiler` skill verification suite.
-- [ ] **MANDATORY**: Request Commit & Push (Manual or via `git-governance` skill) before advancing.
+- [x] **MANDATORY**: Execute `compiler` skill verification suite.
+- [x] **MANDATORY**: Request Commit & Push (Manual or via `git-governance` skill) before advancing.
 
 ### Phase 3: Screen UI Implementation
-- [ ] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
-- [ ] **UI Assets**: Ensure required design assets from `docs/ui/screens/detail_character_details/resources/` are converted to webp and available if needed.
-- [ ] **Screen Layout**: Implement the full Scaffold with TopAppBar, Character Image, Status, Species, Origin, Location, and Episodes based on the `code.html` reference and project Design System.
-- [ ] **Interactions**: Wire the screen to `CharacterDetailViewModel` events (favorite toggle, back navigation).
-- [ ] **MANDATORY**: Execute `compiler` skill verification suite.
-- [ ] **MANDATORY**: Request Commit & Push (Manual or via `git-governance` skill) before advancing.
+- [x] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
+- [x] **UI Assets**: Ensure required design assets from `docs/ui/screens/detail_character_details/resources/` are converted to webp and available if needed.
+- [x] **Screen Layout**: Implement the full Scaffold with TopAppBar, Character Image, Status, Species, Origin, Location, and Episodes based on the `code.html` reference and project Design System.
+- [x] **Interactions**: Wire the screen to `CharacterDetailViewModel` events (favorite toggle, back navigation).
+- [x] **MANDATORY**: Execute `compiler` skill verification suite.
+- [x] **MANDATORY**: Request Commit & Push (Manual or via `git-governance` skill) before advancing.
 
 ### Phase 4: Testing & Finalization
-- [ ] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
-- [ ] **Testing**: Create `CharacterDetailViewModelTest` in `app/src/test/...` using mocking for the usecases.
-- [ ] **Documentation Sync (MANDATORY)**: Run `git status .agents/skills/` and update `.agents/skills/README.md` if there are any changes in the expert skills directory.
-- [ ] **Compiler Verification (MANDATORY)**: Execute the `compiler` skill verification suite.
-- [ ] **Commit & Push (MANDATORY)**: Request Commit & Push manually or via `git-governance` before advancing.
+- [x] **MANDATORY**: Consult `AGENTS.md` for role-specific constraints
+- [x] **Testing**: Create `CharacterDetailViewModelTest` in `app/src/test/...` using mocking for the usecases.
+- [x] **Documentation Sync (MANDATORY)**: Run `git status .agents/skills/` and update `.agents/skills/README.md` if there are any changes in the expert skills directory.
+- [x] **Compiler Verification (MANDATORY)**: Execute the `compiler` skill verification suite.
+- [x] **Commit & Push (MANDATORY)**: Request Commit & Push manually or via `git-governance` skill before advancing.
