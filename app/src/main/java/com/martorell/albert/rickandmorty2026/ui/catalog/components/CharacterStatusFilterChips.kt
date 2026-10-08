@@ -1,4 +1,4 @@
-package com.martorell.albert.rickandmorty2026.ui.list.components
+package com.martorell.albert.rickandmorty2026.ui.catalog.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth

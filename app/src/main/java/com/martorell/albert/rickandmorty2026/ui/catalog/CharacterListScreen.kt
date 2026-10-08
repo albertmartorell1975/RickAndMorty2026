@@ -1,4 +1,4 @@
-package com.martorell.albert.rickandmorty2026.ui.list
+package com.martorell.albert.rickandmorty2026.ui.catalog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,12 +32,12 @@ import com.martorell.albert.rickandmorty2026.R
 import com.martorell.albert.rickandmorty2026.domain.model.Character
 import com.martorell.albert.rickandmorty2026.domain.model.CharacterStatus
 import com.martorell.albert.rickandmorty2026.domain.model.LocationRef
-import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterCard
-import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterPageIndicator
-import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterStatusFilterChips
-import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterTopBar
-import com.martorell.albert.rickandmorty2026.ui.list.components.InitialLoadErrorContent
-import com.martorell.albert.rickandmorty2026.ui.list.components.PaginationErrorFooter
+import com.martorell.albert.rickandmorty2026.ui.catalog.components.CharacterCard
+import com.martorell.albert.rickandmorty2026.ui.catalog.components.CharacterPageIndicator
+import com.martorell.albert.rickandmorty2026.ui.catalog.components.CharacterStatusFilterChips
+import com.martorell.albert.rickandmorty2026.ui.catalog.components.InitialLoadErrorContent
+import com.martorell.albert.rickandmorty2026.ui.catalog.components.PaginationErrorFooter
+import com.martorell.albert.rickandmorty2026.ui.shared.RickAndMortyTopAppBar
 import com.martorell.albert.rickandmorty2026.ui.theme.RickAndMorty2026Theme
 import com.martorell.albert.rickandmorty2026.ui.theme.RmDevicePreview
 import com.martorell.albert.rickandmorty2026.ui.theme.RmThemePreview
@@ -103,86 +104,99 @@ fun CharacterListContent(
             isRetrying = state.isLoadingInitial,
             modifier = modifier
         )
-
     } else {
 
-        Column(
-            modifier = modifier.fillMaxSize()
-        ) {
-            CharacterTopBar()
-            Spacer(modifier = Modifier.height(8.dp))
-            CharacterStatusFilterChips(
-                selectedStatus = state.selectedStatus,
-                onStatusSelected = onStatusSelected,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
+        Scaffold(
+            topBar = {
+                RickAndMortyTopAppBar(
+                    title = stringResource(R.string.top_bar_title),
+                    subtitle = stringResource(R.string.top_bar_subtitle)
+                )
+            },
+            modifier = modifier.fillMaxSize(),
+            containerColor = MaterialTheme.colorScheme.background
+        ) { paddingValues ->
 
-            Spacer(modifier = Modifier.height(12.dp))
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 16.dp)
+                    .padding(paddingValues)
             ) {
-                if (state.isLoadingInitial) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                } else if (state.characters.isEmpty()) {
-                    Text(
-                        text = stringResource(R.string.empty_characters),
-                        modifier = Modifier.align(Alignment.Center),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                } else {
-                    LazyVerticalGrid(
-                        state = gridState,
-                        columns = GridCells.Fixed(2),
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(bottom = 64.dp),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        items(
-                            items = state.characters,
-                            key = { character -> character.id }
-                        ) { character ->
-                            CharacterCard(
-                                character = character,
-                                onCharacterClicked = onCharacterClicked,
-                                onFavoriteToggle = onFavoriteToggle
-                            )
+
+                Spacer(modifier = Modifier.height(8.dp))
+                CharacterStatusFilterChips(
+                    selectedStatus = state.selectedStatus,
+                    onStatusSelected = onStatusSelected,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    if (state.isLoadingInitial) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    } else if (state.characters.isEmpty()) {
+                        Text(
+                            text = stringResource(R.string.empty_characters),
+                            modifier = Modifier.align(Alignment.Center),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    } else {
+                        LazyVerticalGrid(
+                            state = gridState,
+                            columns = GridCells.Fixed(2),
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(bottom = 64.dp),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(
+                                items = state.characters,
+                                key = { character -> character.id }
+                            ) { character ->
+                                CharacterCard(
+                                    character = character,
+                                    onCharacterClicked = onCharacterClicked,
+                                    onFavoriteToggle = onFavoriteToggle
+                                )
+                            }
+                        }
+
+                        if (state.totalCount > 0) {
+                            if (state.characters.isNotEmpty() && (state.errorMessage != null || state.isRetryingPagination)) {
+                                PaginationErrorFooter(
+                                    countShown = state.characters.size,
+                                    totalCount = state.totalCount,
+                                    onRetry = onRetryPagination,
+                                    isRetrying = state.isLoadingNextPage,
+                                    modifier = Modifier
+                                        .align(Alignment.BottomCenter)
+                                        .padding(bottom = 12.dp)
+                                )
+                            } else {
+                                CharacterPageIndicator(
+                                    countShown = state.characters.size,
+                                    totalCount = state.totalCount,
+                                    currentPage = state.currentPage,
+                                    totalPages = state.totalPages,
+                                    modifier = Modifier
+                                        .align(Alignment.BottomCenter)
+                                        .padding(bottom = 12.dp)
+                                )
+                            }
                         }
                     }
 
-                    if (state.totalCount > 0) {
-                        if (state.characters.isNotEmpty() && (state.errorMessage != null || state.isRetryingPagination)) {
-                            PaginationErrorFooter(
-                                countShown = state.characters.size,
-                                totalCount = state.totalCount,
-                                onRetry = onRetryPagination,
-                                isRetrying = state.isLoadingNextPage,
-                                modifier = Modifier
-                                    .align(Alignment.BottomCenter)
-                                    .padding(bottom = 12.dp)
-                            )
-                        } else {
-                            CharacterPageIndicator(
-                                countShown = state.characters.size,
-                                totalCount = state.totalCount,
-                                currentPage = state.currentPage,
-                                totalPages = state.totalPages,
-                                modifier = Modifier
-                                    .align(Alignment.BottomCenter)
-                                    .padding(bottom = 12.dp)
-                            )
-                        }
+                    if (state.isRefreshing) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .padding(16.dp)
+                        )
                     }
-                }
-
-                if (state.isRefreshing) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .padding(16.dp)
-                    )
                 }
             }
         }

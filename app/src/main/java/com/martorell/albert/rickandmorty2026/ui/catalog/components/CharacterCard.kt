@@ -1,4 +1,4 @@
-package com.martorell.albert.rickandmorty2026.ui.list.components
+package com.martorell.albert.rickandmorty2026.ui.catalog.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

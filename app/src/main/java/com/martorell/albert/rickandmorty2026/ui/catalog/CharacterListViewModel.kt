@@ -1,4 +1,4 @@
-package com.martorell.albert.rickandmorty2026.ui.list
+package com.martorell.albert.rickandmorty2026.ui.catalog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

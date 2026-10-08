@@ -1,12 +1,9 @@
 package com.martorell.albert.rickandmorty2026.ui.detail
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,25 +12,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Adjust
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,10 +40,11 @@ import com.martorell.albert.rickandmorty2026.domain.model.Character
 import com.martorell.albert.rickandmorty2026.domain.model.CharacterStatus
 import com.martorell.albert.rickandmorty2026.domain.model.Episode
 import com.martorell.albert.rickandmorty2026.domain.model.LocationRef
+import com.martorell.albert.rickandmorty2026.ui.shared.RickAndMortyTopAppBar
 import com.martorell.albert.rickandmorty2026.ui.detail.components.EpisodesCard
 import com.martorell.albert.rickandmorty2026.ui.detail.components.HeroIdentitySection
 import com.martorell.albert.rickandmorty2026.ui.detail.components.SpacetimeCard
-import com.martorell.albert.rickandmorty2026.ui.list.components.InitialLoadErrorContent
+import com.martorell.albert.rickandmorty2026.ui.catalog.components.InitialLoadErrorContent
 import com.martorell.albert.rickandmorty2026.ui.theme.RickAndMorty2026Theme
 import com.martorell.albert.rickandmorty2026.ui.theme.RmDevicePreview
 import com.martorell.albert.rickandmorty2026.ui.theme.RmThemePreview
@@ -88,7 +80,6 @@ fun CharacterDetailScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharacterDetailContent(
     state: CharacterDetailViewModel.UiState,
@@ -97,135 +88,101 @@ fun CharacterDetailContent(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-        TopAppBar(
-            title = {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .size(36.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
-                                shape = CircleShape,
-                            )
-                            .border(
-                                width = 1.dp,
-                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f),
-                                shape = CircleShape,
-                            ),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Adjust,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(22.dp),
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Text(
-                        text = stringResource(R.string.top_bar_title),
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                    )
-                }
-            },
-            navigationIcon = {
-                IconButton(onClick = onBackClicked) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back"
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.background
+    Scaffold(
+        topBar = {
+            RickAndMortyTopAppBar(
+                title = stringResource(R.string.top_bar_title),
+                onBackClicked = onBackClicked
             )
-        )
-
-        Box(
+        },
+        modifier = modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.background
+    ) { paddingValues ->
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
+                .fillMaxSize()
+                .padding(paddingValues)
         ) {
-            when {
-                state.isLoading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-
-                state.errorMessage != null && state.character == null -> {
-                    InitialLoadErrorContent(
-                        onRetry = onRetry,
-                        isRetrying = state.isLoading,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-
-                state.character != null -> {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState())
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        HeroIdentitySection(character = state.character)
-                        SpacetimeCard(character = state.character)
-                        EpisodesCard(
-                            episodes = state.episodes,
-                            totalCount = state.character.episodeUrls.size
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                    }
-                }
-            }
-        }
-
-        if (state.character != null) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .weight(1f)
             ) {
-                val isFavorite = state.character.isFavorite
-                Button(
-                    onClick = onFavoriteToggle,
+                when {
+                    state.isLoading -> {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
+
+                    state.errorMessage != null && state.character == null -> {
+                        InitialLoadErrorContent(
+                            onRetry = onRetry,
+                            isRetrying = state.isLoading,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+
+                    state.character != null -> {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState())
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            HeroIdentitySection(character = state.character)
+                            SpacetimeCard(character = state.character)
+                            EpisodesCard(
+                                episodes = state.episodes,
+                                totalCount = state.character.episodeUrls.size
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
+                    }
+                }
+            }
+
+            if (state.character != null) {
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(52.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isFavorite) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.surfaceVariant
-                        },
-                        contentColor = if (isFavorite) {
-                            MaterialTheme.colorScheme.onPrimary
-                        } else {
-                            MaterialTheme.colorScheme.onSurface
-                        }
-                    )
+                        .padding(16.dp)
                 ) {
-                    Icon(
-                        imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = if (isFavorite) "Remove from Favorites" else "Add to Favorites",
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                    )
+                    val isFavorite = state.character.isFavorite
+                    Button(
+                        onClick = onFavoriteToggle,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (isFavorite) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.surfaceVariant
+                            },
+                            contentColor = if (isFavorite) {
+                                MaterialTheme.colorScheme.onPrimary
+                            } else {
+                                MaterialTheme.colorScheme.onSurface
+                            }
+                        )
+                    ) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = if (isFavorite) "Remove from Favorites" else "Add to Favorites",
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                        )
+                    }
                 }
             }
         }
     }
 }
-
 
 @RmThemePreview
 @RmDevicePreview
