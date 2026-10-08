@@ -21,4 +21,6 @@
     <string name="character_first_seen_label">Origin:</string>
     <string name="character_id_format">#%03d</string>
     <string name="page_indicator_format">Showing %1$d of %2$d • Page %3$d of %4$d</string>
+    <string name="top_bar_title">Rick &amp; Morty</string>
+    <string name="top_bar_subtitle">Character Catalog</string>
 </resources>

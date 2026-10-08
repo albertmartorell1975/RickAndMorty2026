@@ -34,6 +34,7 @@ import com.martorell.albert.rickandmorty2026.domain.model.LocationRef
 import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterCard
 import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterPageIndicator
 import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterStatusFilterChips
+import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterTopBar
 import com.martorell.albert.rickandmorty2026.ui.list.components.InitialLoadErrorContent
 import com.martorell.albert.rickandmorty2026.ui.list.components.PaginationErrorFooter
 import com.martorell.albert.rickandmorty2026.ui.theme.RickAndMorty2026Theme
@@ -106,21 +107,22 @@ fun CharacterListContent(
     } else {
 
         Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(
-                    horizontal = 16.dp,
-                    vertical = 8.dp
-                )
+            modifier = modifier.fillMaxSize()
         ) {
+            CharacterTopBar()
+            Spacer(modifier = Modifier.height(8.dp))
             CharacterStatusFilterChips(
                 selectedStatus = state.selectedStatus,
-                onStatusSelected = onStatusSelected
+                onStatusSelected = onStatusSelected,
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
 
             Spacer(modifier = Modifier.height(12.dp))
-
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp)
+            ) {
                 if (state.isLoadingInitial) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 } else if (state.characters.isEmpty()) {

@@ -51,7 +51,7 @@ fun PaginationErrorFooter(
         contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         border = BorderStroke(
             width = 1.dp,
-            color = MaterialTheme.colorScheme.outlineVariant
+            color = MaterialTheme.colorScheme.outlineVariant,
         ),
         tonalElevation = 4.dp
     ) {
