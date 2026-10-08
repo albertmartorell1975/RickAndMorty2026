@@ -36,6 +36,7 @@ class CharacterListViewModel @Inject constructor(
         val isLoadingNextPage: Boolean = false,
         val isLoadingInitial: Boolean = true,
         val isRetryingInitial: Boolean = false,
+        val isRetryingPagination: Boolean = false,
         val errorMessage: UiText? = null,
         val totalCount: Int = 0,
         val totalPages: Int = 0,
@@ -87,7 +88,14 @@ class CharacterListViewModel @Inject constructor(
         if (currentState.isLoadingNextPage || currentState.isRefreshing || currentState.isLoadingInitial) return
         if (currentState.currentPage >= currentState.totalPages) return
 
-        _state.update { it.copy(isLoadingNextPage = true) }
+        val isRetrying = currentState.errorMessage != null
+        _state.update {
+            it.copy(
+                isLoadingNextPage = true,
+                isRetryingPagination = isRetrying,
+                errorMessage = null
+            )
+        }
         loadCharacters(page = currentState.currentPage + 1)
     }
 
@@ -114,7 +122,7 @@ class CharacterListViewModel @Inject constructor(
         if (clearExisting) {
             fetchJob?.cancel()
         }
-        
+
         fetchJob = viewModelScope.launch {
             val currentStatus = _state.value.selectedStatus?.name?.lowercase()
 
@@ -148,6 +156,7 @@ class CharacterListViewModel @Inject constructor(
                                 isLoadingInitial = false,
                                 isRetryingInitial = false,
                                 isLoadingNextPage = false,
+                                isRetryingPagination = false,
                                 isRefreshing = false,
                                 errorMessage = null
                             )
@@ -166,6 +175,7 @@ class CharacterListViewModel @Inject constructor(
                                 isLoadingInitial = false,
                                 isRetryingInitial = false,
                                 isLoadingNextPage = false,
+                                isRetryingPagination = false,
                                 isRefreshing = false,
                                 errorMessage = uiText
                             )

@@ -35,6 +35,7 @@ import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterCard
 import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterPageIndicator
 import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterStatusFilterChips
 import com.martorell.albert.rickandmorty2026.ui.list.components.InitialLoadErrorContent
+import com.martorell.albert.rickandmorty2026.ui.list.components.PaginationErrorFooter
 import com.martorell.albert.rickandmorty2026.ui.theme.RickAndMorty2026Theme
 import com.martorell.albert.rickandmorty2026.ui.theme.RmDevicePreview
 import com.martorell.albert.rickandmorty2026.ui.theme.RmThemePreview
@@ -76,6 +77,7 @@ fun CharacterListScreen(
         onFavoriteToggle = viewModel::onFavoriteToggle,
         onStatusSelected = viewModel::onStatusSelected,
         onRetry = viewModel::onRetry,
+        onRetryPagination = viewModel::onLoadMore,
         onRefresh = viewModel::onRefresh,
         modifier = modifier.padding(contentPadding)
     )
@@ -89,6 +91,7 @@ fun CharacterListContent(
     onFavoriteToggle: (Character) -> Unit,
     onStatusSelected: (CharacterStatus?) -> Unit,
     onRetry: () -> Unit,
+    onRetryPagination: () -> Unit,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -148,15 +151,27 @@ fun CharacterListContent(
                     }
 
                     if (state.totalCount > 0) {
-                        CharacterPageIndicator(
-                            countShown = state.characters.size,
-                            totalCount = state.totalCount,
-                            currentPage = state.currentPage,
-                            totalPages = state.totalPages,
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .padding(bottom = 12.dp)
-                        )
+                        if (state.characters.isNotEmpty() && (state.errorMessage != null || state.isRetryingPagination)) {
+                            PaginationErrorFooter(
+                                countShown = state.characters.size,
+                                totalCount = state.totalCount,
+                                onRetry = onRetryPagination,
+                                isRetrying = state.isLoadingNextPage,
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .padding(bottom = 12.dp)
+                            )
+                        } else {
+                            CharacterPageIndicator(
+                                countShown = state.characters.size,
+                                totalCount = state.totalCount,
+                                currentPage = state.currentPage,
+                                totalPages = state.totalPages,
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .padding(bottom = 12.dp)
+                            )
+                        }
                     }
                 }
 
@@ -220,6 +235,7 @@ private fun CharacterListContentPreview() {
             onFavoriteToggle = {},
             onStatusSelected = {},
             onRetry = {},
+            onRetryPagination = {},
             onRefresh = {}
         )
     }
@@ -241,6 +257,7 @@ private fun CharacterListContentErrorPreview() {
             onFavoriteToggle = {},
             onStatusSelected = {},
             onRetry = {},
+            onRetryPagination = {},
             onRefresh = {}
         )
     }
