@@ -2,144 +2,177 @@ package com.martorell.albert.rickandmorty2026.ui.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.martorell.albert.rickandmorty2026.R
 import com.martorell.albert.rickandmorty2026.domain.model.Character
 import com.martorell.albert.rickandmorty2026.domain.model.CharacterStatus
 import com.martorell.albert.rickandmorty2026.domain.model.Result
+import com.martorell.albert.rickandmorty2026.ui.util.UiText
 import com.martorell.albert.rickandmorty2026.usecases.GetCharactersUseCase
 import com.martorell.albert.rickandmorty2026.usecases.ToggleFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class CharacterListViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
 ) : ViewModel() {
 
-    // Inputs (UI Events)
-    private val searchQueryFlow = MutableStateFlow("")
-    private val selectedStatusFlow = MutableStateFlow<CharacterStatus?>(null)
-    private val isRefreshingFlow = MutableStateFlow(false)
-    private val pageFlow = MutableStateFlow(1)
+    private val _state = MutableStateFlow(UiState())
+    val state: StateFlow<UiState> = _state.asStateFlow()
 
-    // Declarative State Stream
-    val state = combine(
-        searchQueryFlow,
-        selectedStatusFlow,
-        isRefreshingFlow,
-        // The core data stream reacts to page and status changes
-        combine(pageFlow, selectedStatusFlow) { page, status -> Pair(page, status) }
-            .flatMapLatest { (page, status) ->
-                getCharactersUseCase(page = page, status = status?.name?.lowercase())
-            },
-    ) { query, status, isRefreshing, result ->
-        when (result) {
-            is Result.Loading -> {
-                UiState(
-                    content = if (isRefreshing)
-                        CharacterListContent.Success(emptyList())
-                    else
-                        CharacterListContent.Loading, // Keep old data if possible during refresh, or show main loader
-                    searchQuery = query,
-                    selectedStatus = status,
-                    isRefreshing = isRefreshing,
-                )
-            }
-
-            is Result.Success -> {
-                val characterCatalog = result.data
-                val trimmedQuery = query.trim()
-                val filtered = if (trimmedQuery.isEmpty()) {
-                    characterCatalog.characters
-                } else {
-                    characterCatalog.characters.filter {
-                        it.name.contains(trimmedQuery, ignoreCase = true)
-                    }
-                }
-
-                // Clear refreshing flag once data succeeds
-                if (isRefreshing) isRefreshingFlow.value = false
-
-                UiState(
-                    content = CharacterListContent.Success(filtered),
-                    searchQuery = query,
-                    selectedStatus = status,
-                    isRefreshing = false,
-                    totalCount = characterCatalog.totalCount,
-                    totalPages = characterCatalog.totalPages,
-                    currentPage = characterCatalog.currentPage,
-                )
-            }
-
-            is Result.Error -> {
-                if (isRefreshing) isRefreshingFlow.value = false
-                UiState(
-                    content = CharacterListContent.Error(
-                        result.exception.message ?: "Unknown error occurred",
-                    ),
-                    searchQuery = query,
-                    selectedStatus = status,
-                    isRefreshing = false,
-                )
-            }
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000), // Rotation-safe
-        initialValue = UiState(), // Initial state before collection starts
-    )
+    private var fetchJob: Job? = null
 
     data class UiState(
-        val content: CharacterListContent = CharacterListContent.Loading,
-        val searchQuery: String = "",
-        val selectedStatus: CharacterStatus? = null, // null = "All"
+        val characters: List<Character> = emptyList(),
+        val selectedStatus: CharacterStatus? = null,
         val isRefreshing: Boolean = false,
+        val isLoadingNextPage: Boolean = false,
+        val isLoadingInitial: Boolean = true,
+        val isRetryingInitial: Boolean = false,
+        val errorMessage: UiText? = null,
         val totalCount: Int = 0,
         val totalPages: Int = 0,
         val currentPage: Int = 1,
     )
 
-    sealed interface CharacterListContent {
-        data object Loading : CharacterListContent
-        data class Success(val characters: List<Character>) : CharacterListContent
-        data class Error(val message: String) : CharacterListContent
-    }
-
-    // UI Actions
-
     fun onStart() {
-        // With stateIn, the initial load happens automatically on subscription.
-        // We can optionally use this to reset states if we navigated back to a failed state.
-        if (state.value.content is CharacterListContent.Error) {
-            pageFlow.value = 1
+        if (_state.value.characters.isEmpty() && _state.value.errorMessage == null) {
+            _state.update { it.copy(isLoadingInitial = true) }
+            loadCharacters(page = 1)
         }
     }
 
-    fun onRefresh() {
-        isRefreshingFlow.value = true
-        pageFlow.value = 1
+    fun onRetry() {
+        _state.update {
+            it.copy(
+                isLoadingInitial = true,
+                isRetryingInitial = true,
+                errorMessage = null
+            )
+        }
+        loadCharacters(page = 1, clearExisting = true)
     }
 
-    fun onSearchQueryChanged(query: String) {
-        searchQueryFlow.value = query
+    fun onRefresh() {
+        _state.update {
+            it.copy(
+                isRefreshing = true,
+                errorMessage = null
+            )
+        }
+        loadCharacters(page = 1, clearExisting = true)
     }
 
     fun onStatusSelected(status: CharacterStatus?) {
-        selectedStatusFlow.value = status
-        pageFlow.value = 1
+        if (_state.value.selectedStatus == status) return
+        _state.update {
+            it.copy(
+                selectedStatus = status,
+                isLoadingInitial = true,
+                errorMessage = null
+            )
+        }
+        loadCharacters(page = 1, clearExisting = true)
+    }
+
+    fun onLoadMore() {
+        val currentState = _state.value
+        if (currentState.isLoadingNextPage || currentState.isRefreshing || currentState.isLoadingInitial) return
+        if (currentState.currentPage >= currentState.totalPages) return
+
+        _state.update { it.copy(isLoadingNextPage = true) }
+        loadCharacters(page = currentState.currentPage + 1)
     }
 
     fun onFavoriteToggle(character: Character) {
+        _state.update { currentState ->
+            val updatedList = currentState.characters.map {
+                if (it.id == character.id) it.copy(isFavorite = !it.isFavorite) else it
+            }
+            currentState.copy(characters = updatedList)
+        }
+
         viewModelScope.launch {
             toggleFavoriteUseCase(character.id)
+        }
+    }
+
+    private fun loadCharacters(page: Int, clearExisting: Boolean = false) {
+        // Si NO estem reiniciant la llista (és a dir, estem fent Paginació)
+        // i ja hi ha una tasca activa, simplement sortim per no tallar-la.
+        if (!clearExisting && fetchJob?.isActive == true) return
+
+        // Si estem fent un "clearExisting" (Filtres, Refresh, Retry),
+        // llavors sí que cancel·lem de manera segura perquè anem a la pàgina 1.
+        if (clearExisting) {
+            fetchJob?.cancel()
+        }
+        
+        fetchJob = viewModelScope.launch {
+            val currentStatus = _state.value.selectedStatus?.name?.lowercase()
+
+            getCharactersUseCase(page = page, status = currentStatus).collect { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        // We already handle loading flags in the actions. So, we are just waiting.
+                    }
+
+                    is Result.Success -> {
+                        val catalog = result.data
+
+                        _state.update { currentState ->
+                            val newList = if (clearExisting || page == 1) {
+                                catalog.characters
+                            } else {
+                                val newMap = catalog.characters.associateBy { it.id }
+                                val updatedExisting =
+                                    currentState.characters.map { newMap[it.id] ?: it }
+                                val existingIds = updatedExisting.map { it.id }.toSet()
+                                val completelyNew =
+                                    catalog.characters.filterNot { it.id in existingIds }
+                                updatedExisting + completelyNew
+                            }
+
+                            currentState.copy(
+                                characters = newList,
+                                totalCount = catalog.totalCount,
+                                totalPages = catalog.totalPages,
+                                currentPage = catalog.currentPage,
+                                isLoadingInitial = false,
+                                isRetryingInitial = false,
+                                isLoadingNextPage = false,
+                                isRefreshing = false,
+                                errorMessage = null
+                            )
+                        }
+                    }
+
+                    is Result.Error -> {
+                        val message = result.exception.message
+                        val uiText = if (!message.isNullOrBlank()) {
+                            UiText.DynamicString(message)
+                        } else {
+                            UiText.StringResource(R.string.error_unknown)
+                        }
+                        _state.update {
+                            it.copy(
+                                isLoadingInitial = false,
+                                isRetryingInitial = false,
+                                isLoadingNextPage = false,
+                                isRefreshing = false,
+                                errorMessage = uiText
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -7,6 +7,11 @@
     <string name="status_dead">Dead</string>
     <string name="status_unknown">Unknown</string>
     <string name="error_retry">Retry</string>
+    <string name="error_initial_load_title">Lost in the Multiverse</string>
+    <string name="error_initial_load_description">Could not establish a connection with the Citadel gateway. Check your interdimensional network and try again.</string>
+    <string name="error_initial_load_retry">Retry Connection</string>
+    <string name="error_initial_load_reconnecting">Reconnecting…</string>
+    <string name="error_unknown">An unknown error occurred</string>
     <string name="empty_characters">No characters found</string>
     <string name="character_status_species_format">%1$s - %2$s</string>
     <string name="character_last_location_label">Last known location:</string>

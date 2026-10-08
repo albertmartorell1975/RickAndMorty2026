@@ -9,15 +9,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,11 +33,12 @@ import com.martorell.albert.rickandmorty2026.domain.model.CharacterStatus
 import com.martorell.albert.rickandmorty2026.domain.model.LocationRef
 import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterCard
 import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterPageIndicator
-import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterSearchBar
 import com.martorell.albert.rickandmorty2026.ui.list.components.CharacterStatusFilterChips
+import com.martorell.albert.rickandmorty2026.ui.list.components.InitialLoadErrorContent
 import com.martorell.albert.rickandmorty2026.ui.theme.RickAndMorty2026Theme
 import com.martorell.albert.rickandmorty2026.ui.theme.RmDevicePreview
 import com.martorell.albert.rickandmorty2026.ui.theme.RmThemePreview
+import com.martorell.albert.rickandmorty2026.ui.util.UiText
 
 @Composable
 fun CharacterListScreen(
@@ -44,18 +48,34 @@ fun CharacterListScreen(
     viewModel: CharacterListViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val gridState = rememberLazyGridState()
 
     LaunchedEffect(Unit) {
         viewModel.onStart()
     }
 
+    val currentSize = state.characters.size
+    val shouldLoadMore by remember(currentSize) {
+        derivedStateOf {
+            val lastVisibleItem = gridState.layoutInfo.visibleItemsInfo.lastOrNull()
+                ?: return@derivedStateOf false
+            lastVisibleItem.index >= currentSize - 6
+        }
+    }
+
+    LaunchedEffect(shouldLoadMore) {
+        if (shouldLoadMore) {
+            viewModel.onLoadMore()
+        }
+    }
+
     CharacterListContent(
         state = state,
+        gridState = gridState,
         onCharacterClicked = { onCharacterClicked(it.id) },
         onFavoriteToggle = viewModel::onFavoriteToggle,
-        onSearchQueryChanged = viewModel::onSearchQueryChanged,
         onStatusSelected = viewModel::onStatusSelected,
-        onRetry = viewModel::onStart,
+        onRetry = viewModel::onRetry,
         onRefresh = viewModel::onRefresh,
         modifier = modifier.padding(contentPadding)
     )
@@ -64,107 +84,89 @@ fun CharacterListScreen(
 @Composable
 fun CharacterListContent(
     state: CharacterListViewModel.UiState,
+    gridState: LazyGridState,
     onCharacterClicked: (Character) -> Unit,
     onFavoriteToggle: (Character) -> Unit,
-    onSearchQueryChanged: (String) -> Unit,
     onStatusSelected: (CharacterStatus?) -> Unit,
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp
+    if (state.characters.isEmpty() && (state.errorMessage != null || state.isRetryingInitial)) {
+
+        InitialLoadErrorContent(
+            onRetry = onRetry,
+            isRetrying = state.isLoadingInitial,
+            modifier = modifier
+        )
+
+    } else {
+
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 8.dp
+                )
+        ) {
+            CharacterStatusFilterChips(
+                selectedStatus = state.selectedStatus,
+                onStatusSelected = onStatusSelected
             )
-    ) {
-        CharacterSearchBar(
-            query = state.searchQuery,
-            onQueryChanged = onSearchQueryChanged
-        )
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-        CharacterStatusFilterChips(
-            selectedStatus = state.selectedStatus,
-            onStatusSelected = onStatusSelected
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Box(modifier = Modifier.fillMaxSize()) {
-            when (val content = state.content) {
-                is CharacterListViewModel.CharacterListContent.Loading -> {
+            Box(modifier = Modifier.fillMaxSize()) {
+                if (state.isLoadingInitial) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-
-                is CharacterListViewModel.CharacterListContent.Error -> {
-                    Column(
+                } else if (state.characters.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.empty_characters),
                         modifier = Modifier.align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                } else {
+                    LazyVerticalGrid(
+                        state = gridState,
+                        columns = GridCells.Fixed(2),
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(bottom = 64.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text(
-                            text = content.message,
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Button(onClick = onRetry) {
-                            Text(text = stringResource(R.string.error_retry))
-                        }
-                    }
-                }
-
-                is CharacterListViewModel.CharacterListContent.Success -> {
-                    if (content.characters.isEmpty()) {
-                        Text(
-                            text = stringResource(R.string.empty_characters),
-                            modifier = Modifier.align(Alignment.Center),
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    } else {
-                        LazyVerticalGrid(
-                            columns = GridCells.Fixed(2),
-                            modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(bottom = 64.dp),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            items(
-                                items = content.characters,
-                                key = { character -> character.id }
-                            ) { character ->
-                                CharacterCard(
-                                    character = character,
-                                    onCharacterClicked = onCharacterClicked,
-                                    onFavoriteToggle = onFavoriteToggle
-                                )
-                            }
-                        }
-
-                        if (state.totalCount > 0) {
-                            CharacterPageIndicator(
-                                countShown = content.characters.size,
-                                totalCount = state.totalCount,
-                                currentPage = state.currentPage,
-                                totalPages = state.totalPages,
-                                modifier = Modifier
-                                    .align(Alignment.BottomCenter)
-                                    .padding(bottom = 12.dp)
+                        items(
+                            items = state.characters,
+                            key = { character -> character.id }
+                        ) { character ->
+                            CharacterCard(
+                                character = character,
+                                onCharacterClicked = onCharacterClicked,
+                                onFavoriteToggle = onFavoriteToggle
                             )
                         }
                     }
-                }
-            }
 
-            if (state.isRefreshing) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .padding(16.dp)
-                )
+                    if (state.totalCount > 0) {
+                        CharacterPageIndicator(
+                            countShown = state.characters.size,
+                            totalCount = state.totalCount,
+                            currentPage = state.currentPage,
+                            totalPages = state.totalPages,
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(bottom = 12.dp)
+                        )
+                    }
+                }
+
+                if (state.isRefreshing) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(16.dp)
+                    )
+                }
             }
         }
     }
@@ -206,16 +208,37 @@ private fun CharacterListContentPreview() {
     RickAndMorty2026Theme {
         CharacterListContent(
             state = CharacterListViewModel.UiState(
-                content = CharacterListViewModel.CharacterListContent.Success(sampleCharacters),
-                searchQuery = "",
+                characters = sampleCharacters,
                 selectedStatus = null,
                 totalCount = 826,
                 totalPages = 42,
-                currentPage = 1
+                currentPage = 1,
+                isLoadingInitial = false
             ),
+            gridState = rememberLazyGridState(),
             onCharacterClicked = {},
             onFavoriteToggle = {},
-            onSearchQueryChanged = {},
+            onStatusSelected = {},
+            onRetry = {},
+            onRefresh = {}
+        )
+    }
+}
+
+@RmThemePreview
+@RmDevicePreview
+@Composable
+private fun CharacterListContentErrorPreview() {
+    RickAndMorty2026Theme {
+        CharacterListContent(
+            state = CharacterListViewModel.UiState(
+                characters = emptyList(),
+                isLoadingInitial = false,
+                errorMessage = UiText.DynamicString("No internet connection")
+            ),
+            gridState = rememberLazyGridState(),
+            onCharacterClicked = {},
+            onFavoriteToggle = {},
             onStatusSelected = {},
             onRetry = {},
             onRefresh = {}
