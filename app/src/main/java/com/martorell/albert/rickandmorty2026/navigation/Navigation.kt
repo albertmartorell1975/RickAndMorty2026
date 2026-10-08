@@ -10,6 +10,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
+import com.martorell.albert.rickandmorty2026.ui.detail.CharacterDetailScreen
 import com.martorell.albert.rickandmorty2026.ui.list.CharacterListScreen
 
 /**
@@ -41,11 +43,13 @@ fun Navigation(
                 )
             }
             
-            // The Detail screen composable will be added here once implemented.
-            // composable<Destination.CharacterDetail> { backStackEntry ->
-            //    val detail = backStackEntry.toRoute<Destination.CharacterDetail>()
-            //    CharacterDetailScreen(characterId = detail.characterId)
-            // }
+            composable<Destination.CharacterDetail> { backStackEntry ->
+                val detail = backStackEntry.toRoute<Destination.CharacterDetail>()
+                CharacterDetailScreen(
+                    characterId = detail.characterId,
+                    onBackClicked = { appState.navController.popBackStack() }
+                )
+            }
         }
     }
 }
