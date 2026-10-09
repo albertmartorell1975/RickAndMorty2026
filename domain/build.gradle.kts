@@ -16,5 +16,5 @@ kotlin {
 }
 
 dependencies {
-    // Zero dependencies or pure Kotlin libraries like Coroutines.
+    implementation(libs.kotlinx.coroutines.core)
 }

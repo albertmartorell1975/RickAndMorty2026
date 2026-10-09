@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">RickAndMorty2026</string>
+    <string name="character_list_title">Characters</string>
+    <string name="search_placeholder">Search character by name…</string>
+    <string name="status_all">All</string>
+    <string name="status_alive">Alive</string>
+    <string name="status_dead">Dead</string>
+    <string name="status_unknown">Unknown</string>
+    <string name="error_retry">Retry</string>
+    <string name="error_initial_load_title">Lost in the Multiverse</string>
+    <string name="error_initial_load_description">Could not establish a connection with the Citadel gateway. Check your interdimensional network and try again.</string>
+    <string name="error_initial_load_retry">Retry Connection</string>
+    <string name="error_initial_load_reconnecting">Reconnecting…</string>
+    <string name="error_pagination_title">Sync Interrupted</string>
+    <string name="error_pagination_subtitle_format">Showing %1$d of %2$d characters</string>
+    <string name="error_pagination_retry">Retry</string>
+    <string name="error_unknown">An unknown error occurred</string>
+    <string name="empty_characters">No characters found</string>
+    <string name="character_status_species_format">%1$s - %2$s</string>
+    <string name="character_last_location_label">Last known location:</string>
+    <string name="character_first_seen_label">Origin:</string>
+    <string name="character_id_format">#%03d</string>
+    <string name="page_indicator_format">Showing %1$d of %2$d • Page %3$d of %4$d</string>
+    <string name="top_bar_title">Rick &amp; Morty</string>
+    <string name="top_bar_subtitle">Character Catalog</string>
+    <string name="toast_character_state_updated">Updated character state</string>
+    <string name="character_origin_planet_label">Origin Planet</string>
+    <string name="character_last_location_label_detail">Last Known Location</string>
+    <string name="character_episodes_appearances_format">%1$d canonical appearances</string>
 </resources>
