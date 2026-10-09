@@ -28,7 +28,7 @@ class CharacterDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val characterId: Int =
-        savedStateHandle.toRoute<Destination.CharacterDetail>().characterId
+        savedStateHandle.get<Int>("characterId") ?: savedStateHandle.toRoute<Destination.CharacterDetail>().characterId
 
     private val _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state.asStateFlow()

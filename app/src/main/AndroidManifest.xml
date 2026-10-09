@@ -6,9 +6,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/screen"
+        android:icon="@drawable/ricksanchez"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/screen"
+        android:roundIcon="@drawable/ricksanchez"
         android:supportsRtl="true"
         android:theme="@style/Theme.RickAndMorty2026">
         <activity
