@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.martorell.albert.rickandmorty2026"
-        minSdk = 26
+        minSdk = 34
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"

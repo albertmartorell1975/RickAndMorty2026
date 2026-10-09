@@ -46,7 +46,7 @@ fun EpisodeItem(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "%02d".format(number),
+                text = number.toString().padStart(2, '0'),
                 style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.primary
             )

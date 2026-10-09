@@ -42,7 +42,7 @@ import com.martorell.albert.rickandmorty2026.domain.model.Episode
 import com.martorell.albert.rickandmorty2026.domain.model.LocationRef
 import com.martorell.albert.rickandmorty2026.ui.shared.RickAndMortyTopAppBar
 import com.martorell.albert.rickandmorty2026.ui.detail.components.EpisodesCard
-import com.martorell.albert.rickandmorty2026.ui.detail.components.HeroIdentitySection
+import com.martorell.albert.rickandmorty2026.ui.detail.components.CharacterIdentity
 import com.martorell.albert.rickandmorty2026.ui.detail.components.SpacetimeCard
 import com.martorell.albert.rickandmorty2026.ui.catalog.components.InitialLoadErrorContent
 import com.martorell.albert.rickandmorty2026.ui.theme.RickAndMorty2026Theme
@@ -129,7 +129,7 @@ fun CharacterDetailContent(
                                 .padding(horizontal = 16.dp, vertical = 8.dp),
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            HeroIdentitySection(character = state.character)
+                            CharacterIdentity(character = state.character)
                             SpacetimeCard(character = state.character)
                             EpisodesCard(
                                 episodes = state.episodes,

@@ -34,7 +34,7 @@ import com.martorell.albert.rickandmorty2026.ui.model.toColor
 import com.martorell.albert.rickandmorty2026.ui.model.toStringRes
 
 @Composable
-fun HeroIdentitySection(
+fun CharacterIdentity(
     character: Character,
     modifier: Modifier = Modifier
 ) {
