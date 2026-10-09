@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme -->
-    <style name="Theme.RickAndMorty2026" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Base application theme for Dark Mode -->
+    <style name="Theme.RickAndMorty2026" parent="android:Theme.Material.NoActionBar" />
 
-    <!-- Starting Splash Screen Theme -->
+    <!-- Starting Splash Screen Theme for Dark Mode -->
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/splash_background</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launch</item>
