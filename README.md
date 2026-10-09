@@ -29,7 +29,9 @@ This project strictly adheres to **Clean Architecture** principles and the **SOL
 
 ## Development Methodology
 
-This project leverages **Agentic Programming**. Using the [android-ai-workflow-foundation](https://github.com/albertmartorell1975/android-ai-workflow-foundation) framework, development was guided by autonomous AI agents that enforced Git Flow governance, architectural bounds, and continuous pre-commit verification checks.
+This project was developed using **Agentic Programming** with a strict **Human-in-the-loop** approach. Leveraging the [android-ai-workflow-foundation](https://github.com/albertmartorell1975/android-ai-workflow-foundation) framework, I orchestrated AI agents to assist with the development process. 
+
+While the agents enforced Git Flow governance, architectural boundaries, and pre-commit verification checks, all technical decisions, architecture design, and final code reviews were supervised and validated by human oversight. Critical components and delicate refactors were hand-coded to ensure optimal performance and adherence to standard practices.
 
 ## Getting Started
 
