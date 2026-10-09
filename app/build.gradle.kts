@@ -21,6 +21,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 
     buildTypes {
         release {
@@ -64,9 +68,5 @@ dependencies {
     ksp(libs.hilt.compiler)
     // Testing
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.junit)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-    debugImplementation(libs.androidx.compose.ui.tooling)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
