@@ -3,7 +3,7 @@
 This document summarizes the architecture, technical decisions, and testing strategy for the **RickAndMorty2026** Android application, prepared for technical interview defense and project review.
 
 > **Development Methodology Note:**
-> This project was developed utilizing **Agentic Programming** (Programació Agèntica) leveraging the [android-ai-workflow-foundation](https://github.com/albertmartorell1975/android-ai-workflow-foundation) framework. This approach enabled structured AI-assisted development with strict local governance, enforcing Git Flow conventions, Clean Architecture validation, and mandatory pre-commit verification (local tests and compilation) directly within the IDE.
+> This project was developed utilizing **Agentic Programming** (Programació Agèntica) with a strict **Human-in-the-loop** approach, leveraging the [android-ai-workflow-foundation](https://github.com/albertmartorell1975/android-ai-workflow-foundation) framework. While the framework enabled structured AI-assisted development, enforcing Git Flow conventions, Clean Architecture boundaries, and mandatory pre-commit verification directly within the IDE, all technical decisions, architecture design, and final code reviews were supervised and validated by human oversight. Critical components were hand-coded to ensure optimal performance and adherence to standard practices.
 
 ---
 
